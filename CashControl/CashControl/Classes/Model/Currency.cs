@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CashControl
 {
-    //Complete
     [Table("currency")]
     public class Currency: INotifyPropertyChanged
     {
@@ -16,12 +15,19 @@ namespace CashControl
         {
             Sources = new HashSet<Source>();
         }
+
         #region Fields
+
         private string title;
+
         private string description;
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         #endregion
+
         #region Properties
+
         [Key]
         [Required]
         [MaxLength(36)]
@@ -50,14 +56,23 @@ namespace CashControl
             }
         }
 
+        #endregion
+
+        #region Navigation Properties
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Source> Sources { get; set; }
+
         #endregion
+
+        #region Voids
 
         public void OnPropertyChanged(string prop = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
+        #endregion
     }
 }

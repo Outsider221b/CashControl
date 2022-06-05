@@ -16,6 +16,20 @@ namespace CashControl
             Operations = new HashSet<Operation>();
         }
 
+        #region Fields
+
+        private string title;
+
+        private double balance;
+
+        private DateTime lastUpdate;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Properties
+
         [Key]
         [Required]
         [MaxLength(36)]
@@ -23,28 +37,60 @@ namespace CashControl
 
         [Required]
         [MaxLength(50)]
-        public string Title { get; set; }
+        public string Title
+        {
+            get => title;
+            set
+            {
+                title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
 
-        public double Balance { get; set; }
+        public double Balance
+        {
+            get => balance;
+            set
+            {
+                balance = value;
+                OnPropertyChanged(nameof(Balance));
+            }
+        }
+
+        public DateTime Creation { get; set; }
+
+        public DateTime LastUpdate
+        {
+            get => lastUpdate;
+            set
+            {
+                lastUpdate = value;
+                OnPropertyChanged(nameof(LastUpdate));
+            }
+        }
+
+        #endregion
+
+        #region Navidation Properties
 
         public string CurrencyId { get; set; }
 
         [ForeignKey(nameof(CurrencyId))]
         public virtual Currency Currency { get; set; }
 
-        public DateTime Creation { get; set; }
-
-        public DateTime LastUpdate { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Operation> Operations { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        #region Voids
 
         public void OnPropertyChanged(string prop = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
+        #endregion
     }
 }

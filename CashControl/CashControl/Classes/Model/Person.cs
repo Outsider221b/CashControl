@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CashControl
 {
+    //Complete
     [Table("person")]
     public class Person: INotifyPropertyChanged
     {
@@ -16,14 +17,21 @@ namespace CashControl
             CreditOperations = new HashSet<CreditOperation>();
         }
 
+        #region Fields
+
         private string fullName;
         private string description;
         private DateTime lastUpdate;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Properties
 
         [Key]
         [Required]
         [MaxLength(36)]
-        public string Id { get; set; }
+        public string PersonId { get; set; }
 
         [Required]
         [MaxLength(80)]
@@ -60,15 +68,33 @@ namespace CashControl
             }
         }
 
+        #endregion
+
+        #region Navigation Properties;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CreditOperation> CreditOperations { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        #region Voids
 
         public void OnPropertyChanged(string prop = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
+        #endregion
+
+        #region Not Mapped Properties
+
+        [NotMapped]
+        public string GetCreationString { get => Creation.ToString("g"); }
+
+        [NotMapped]
+        public string GetLastUpdateString { get => LastUpdate.ToString("g"); }
+
+        #endregion
     }
 }
